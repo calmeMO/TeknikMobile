@@ -3,14 +3,19 @@ import { siteConfig, getWhatsAppUrl } from '../config/siteConfig';
 
 export default function HeroCinematic() {
   const videoRef = useRef(null);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth <= 600;
+    }
+    return false;
+  });
   const [isReady, setIsReady] = useState(false);
   const whatsAppUrl = getWhatsAppUrl();
 
-  // Responsive device video detection
+  // Responsive device video detection (breakpoint 600px for true mobile smartphones)
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
+      setIsMobile(window.innerWidth <= 600);
     };
     checkMobile();
     window.addEventListener('resize', checkMobile);
@@ -33,6 +38,7 @@ export default function HeroCinematic() {
     setIsReady(true);
   };
 
+  // Desktop landscape video on computers/tablets, mobile portrait video on smartphones
   const videoSrc = isMobile
     ? "/galaxy-s24-ultra-highlights-form-factor-mo.webm"
     : "/galaxy-s24-ultra-highlights-form-factor.webm";
@@ -54,7 +60,7 @@ export default function HeroCinematic() {
         />
       </div>
 
-      {/* 2. Text and Actions strictly BELOW the video */}
+      {/* 2. Text strictly BELOW the video */}
       <div className="hero-keynote-info">
         <h1 className="hero-keynote-title font-samsung-sharp">
           Samsung Galaxy

@@ -1542,22 +1542,28 @@ a.logo:hover {
 
 @media (max-width: 768px) {
   .hero-keynote-container {
-    padding-top: 96px;
-    padding-bottom: 40px;
+    padding-top: 70px;
+    padding-bottom: 32px;
   }
   .hero-video-stage {
-    height: 48vh;
-    min-height: 320px;
-    max-height: 460px;
-    max-width: 390px;
-    margin-bottom: 16px;
+    height: 40vh;
+    min-height: 270px;
+    max-height: 390px;
+    max-width: 350px;
+    margin-top: 0;
+    margin-bottom: 12px;
+    padding: 0 8px;
   }
   .hero-keynote-title {
-    font-size: clamp(32px, 8vw, 44px);
+    font-size: clamp(28px, 7.8vw, 38px);
+    margin-bottom: 6px;
   }
   .hero-keynote-subtitle {
-    font-size: 14.5px;
-    margin-bottom: 20px;
+    font-size: 14px;
+    margin-bottom: 18px;
+  }
+  .hero-keynote-actions {
+    gap: 12px;
   }
 }
 
