@@ -3,104 +3,68 @@ import { siteConfig, getWhatsAppUrl } from '../config/siteConfig';
 
 export default function HeroCinematic() {
   const videoRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
+  const [hasEnded, setHasEnded] = useState(false);
   const whatsAppUrl = getWhatsAppUrl();
 
+  // Responsive device video detection
   useEffect(() => {
-    // Ensure video attempts to play smoothly on mount
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // When video source loads, start from second 2, play once as entrance animation
+  const handleLoadedMetadata = () => {
     if (videoRef.current) {
-      videoRef.current.play().catch(() => {
-        // Autoplay policy fallback: paused state if blocked
+      videoRef.current.currentTime = 2;
+      videoRef.current.play().then(() => {
+        setIsPlaying(true);
+        setHasEnded(false);
+      }).catch(() => {
         setIsPlaying(false);
       });
     }
-  }, []);
+  };
 
-  const toggleVideoPlayback = () => {
-    if (!videoRef.current) return;
-    if (isPlaying) {
-      videoRef.current.pause();
-      setIsPlaying(false);
-    } else {
-      videoRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+  const handleEnded = () => {
+    setIsPlaying(false);
+    setHasEnded(true);
+  };
+
+  const replayAnimation = () => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = 2;
+      videoRef.current.play().then(() => {
+        setIsPlaying(true);
+        setHasEnded(false);
+      }).catch(() => {});
     }
   };
 
+  const videoSrc = isMobile
+    ? "/galaxy-s24-ultra-highlights-form-factor-mo.webm"
+    : "/galaxy-s24-ultra-highlights-form-factor.webm";
+
+  const posterSrc = isMobile ? "/mobile-poster.jpg" : "/desktop-poster.jpg";
+
   return (
-    <section className="hero-cinematic-container" id="top" aria-label="Hero Samsung Galaxy S24 Ultra">
-      {/* Background Video Layer */}
-      <div className="hero-video-wrapper" aria-hidden="true">
-        <video
-          ref={videoRef}
-          className="hero-video-bg"
-          autoPlay
-          muted
-          loop
-          playsInline
-          poster="/desktop-poster.jpg"
-        >
-          {/* Mobile WebM for narrow viewports */}
-          <source
-            src="/galaxy-s24-ultra-highlights-form-factor-mo.webm"
-            type="video/webm"
-            media="(max-width: 768px)"
-          />
-          {/* Desktop WebM for larger displays */}
-          <source
-            src="/galaxy-s24-ultra-highlights-form-factor.webm"
-            type="video/webm"
-          />
-        </video>
-        <div className="hero-video-mask" />
-      </div>
-
-      {/* Floating Video Control Pill */}
-      <button
-        type="button"
-        className="video-ctrl-pill font-samsung-bold"
-        onClick={toggleVideoPlayback}
-        aria-label={isPlaying ? "Pausar video de fondo" : "Reproducir video de fondo"}
-        title={isPlaying ? "Pausar video" : "Reproducir video"}
-      >
-        {isPlaying ? (
-          <>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-              <rect x="6" y="4" width="4" height="16" rx="1.5" />
-              <rect x="14" y="4" width="4" height="16" rx="1.5" />
-            </svg>
-            <span>Pausar</span>
-          </>
-        ) : (
-          <>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M8 5v14l11-7z" />
-            </svg>
-            <span>Reproducir</span>
-          </>
-        )}
-      </button>
-
-      {/* Hero Content */}
-      <div className="hero-cinematic-content">
-        {/* Status Badge */}
-        <div className="hero-pill-badge font-samsung-bold">
-          <span className="hero-pulsing-dot" aria-hidden="true" />
-          <span>Flagship 2024 · Disponible en Teknik Mobile RD</span>
-        </div>
-
-        {/* Main H1 Title in Samsung Sharp Sans Bold 700 */}
-        <h1 className="hero-cinematic-title font-samsung-sharp">
-          Samsung Galaxy S24 Ultra.<br />
-          <span className="accent-gradient">La era de Galaxy AI está aquí.</span>
+    <section className="hero-keynote-container" id="top" aria-label="Hero Samsung Galaxy">
+      {/* Top Header Information: Apple/Samsung style */}
+      <div className="hero-keynote-header">
+        <h1 className="hero-keynote-title font-samsung-sharp">
+          Samsung Galaxy
         </h1>
-
-        {/* Lede in SamsungOne Regular 400 */}
-        <p className="hero-cinematic-desc font-samsung-one">
-          Forjado en titanio aeroespacial con pantalla Dynamic AMOLED 2X, sensor fotográfico de 200 MP y toda la potencia de Snapdragon 8 Gen 3. Adquiérelo hoy en Teknik Mobile con garantía local en República Dominicana.
+        <p className="hero-keynote-subtitle font-samsung-one">
+          Uno de los teléfonos insignia de nuestra tienda
         </p>
 
-        {/* Action Buttons in SamsungOne Bold 700 */}
-        <div className="hero-cinematic-actions">
+        {/* Action CTAs */}
+        <div className="hero-keynote-actions">
           {whatsAppUrl ? (
             <a
               href={whatsAppUrl}
@@ -115,7 +79,7 @@ export default function HeroCinematic() {
             </a>
           ) : (
             <a
-              href="https://wa.me/18095550199?text=Hola%20Teknik%20Mobile%2C%20quiero%20informaci%C3%B3n%20del%20Galaxy%20S24%20Ultra"
+              href="https://wa.me/18095550199?text=Hola%20Teknik%20Mobile%2C%20quiero%20informaci%C3%B3n%20del%20Samsung%20Galaxy"
               className="btn-apple-primary font-samsung-bold"
               target="_blank"
               rel="noopener noreferrer"
@@ -134,6 +98,38 @@ export default function HeroCinematic() {
             </svg>
           </a>
         </div>
+      </div>
+
+      {/* Hero Showcase Video: Adapted for Devices, starts at 2s, plays once */}
+      <div className="hero-keynote-stage">
+        <video
+          key={videoSrc}
+          ref={videoRef}
+          className="hero-keynote-video"
+          src={videoSrc}
+          poster={posterSrc}
+          autoPlay
+          muted
+          playsInline
+          onLoadedMetadata={handleLoadedMetadata}
+          onEnded={handleEnded}
+        />
+
+        {/* Discreet replay button when animation concludes */}
+        {hasEnded && (
+          <button
+            type="button"
+            className="video-replay-pill font-samsung-bold"
+            onClick={replayAnimation}
+            aria-label="Volver a reproducir animación de entrada"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="1 4 1 10 7 10" />
+              <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+            </svg>
+            <span>Volver a ver</span>
+          </button>
+        )}
       </div>
     </section>
   );
