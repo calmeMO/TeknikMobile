@@ -1427,35 +1427,63 @@ a.logo:hover {
   position: relative;
   background: #000000;
   width: 100%;
-  padding-top: 130px;
-  padding-bottom: 50px;
+  padding-top: 110px;
+  padding-bottom: 60px;
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow: hidden;
 }
 
-.hero-keynote-header {
+/* 1. Video Entrance Stage at the Top */
+.hero-video-stage {
+  position: relative;
+  width: 100%;
+  max-width: 960px;
+  height: 54vh;
+  min-height: 400px;
+  max-height: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 16px;
+  margin-bottom: 24px;
+}
+
+.hero-entrance-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000000;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+.hero-entrance-video.is-ready {
+  opacity: 1;
+}
+
+/* 2. Text and Actions strictly BELOW the video */
+.hero-keynote-info {
   max-width: 900px;
   width: 100%;
   padding: 0 24px;
   text-align: center;
-  margin-bottom: 24px;
   z-index: 10;
 }
 
 .hero-keynote-title {
-  font-size: clamp(40px, 7.2vw, 84px);
+  font-size: clamp(38px, 6.4vw, 72px);
   color: #ffffff;
-  line-height: 1.05;
+  line-height: 1.08;
   letter-spacing: -0.03em;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .hero-keynote-subtitle {
-  font-size: clamp(16px, 1.8vw, 22px);
+  font-size: clamp(16px, 1.6vw, 20px);
   color: #86868b;
-  margin-bottom: 28px;
+  margin-bottom: 26px;
 }
 
 .hero-keynote-actions {
@@ -1512,80 +1540,24 @@ a.logo:hover {
   color: #ffffff;
 }
 
-.hero-keynote-stage {
-  position: relative;
-  width: 100%;
-  max-width: 1080px;
-  padding: 0 16px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.hero-keynote-video {
-  width: 100%;
-  max-height: 68vh;
-  min-height: 440px;
-  object-fit: contain;
-  border-radius: 24px;
-  background: #000000;
-}
-
-.video-replay-pill {
-  position: absolute;
-  bottom: 24px;
-  right: 36px;
-  z-index: 20;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 18px;
-  border-radius: 9999px;
-  background: rgba(28, 28, 35, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  color: #ffffff;
-  font-size: 13px;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
-  animation: fadeInPill 0.3s ease-out;
-}
-
-@keyframes fadeInPill {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.video-replay-pill:hover {
-  background: rgba(45, 45, 55, 0.95);
-  border-color: rgba(255, 255, 255, 0.4);
-  transform: scale(1.04);
-}
-
 @media (max-width: 768px) {
   .hero-keynote-container {
-    padding-top: 104px;
-    padding-bottom: 36px;
+    padding-top: 96px;
+    padding-bottom: 40px;
+  }
+  .hero-video-stage {
+    height: 48vh;
+    min-height: 320px;
+    max-height: 460px;
+    max-width: 390px;
+    margin-bottom: 16px;
   }
   .hero-keynote-title {
-    font-size: clamp(34px, 8.8vw, 48px);
+    font-size: clamp(32px, 8vw, 44px);
   }
   .hero-keynote-subtitle {
-    font-size: 15px;
-    margin-bottom: 22px;
-  }
-  .hero-keynote-video {
-    max-height: 56vh;
-    min-height: 360px;
-    max-width: 420px;
-  }
-  .video-replay-pill {
-    bottom: 16px;
-    right: 20px;
-    padding: 8px 14px;
-    font-size: 12px;
+    font-size: 14.5px;
+    margin-bottom: 20px;
   }
 }
 

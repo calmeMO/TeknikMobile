@@ -4,8 +4,7 @@ import { siteConfig, getWhatsAppUrl } from '../config/siteConfig';
 export default function HeroCinematic() {
   const videoRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(true);
-  const [hasEnded, setHasEnded] = useState(false);
+  const [isReady, setIsReady] = useState(false);
   const whatsAppUrl = getWhatsAppUrl();
 
   // Responsive device video detection
@@ -18,44 +17,45 @@ export default function HeroCinematic() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // When video source loads, start from second 2, play once as entrance animation
+  // When video metadata is ready, seek to second 3.1 and play once as entrance animation
   const handleLoadedMetadata = () => {
     if (videoRef.current) {
-      videoRef.current.currentTime = 2;
+      videoRef.current.currentTime = 3.1;
       videoRef.current.play().then(() => {
-        setIsPlaying(true);
-        setHasEnded(false);
+        setIsReady(true);
       }).catch(() => {
-        setIsPlaying(false);
+        setIsReady(true);
       });
     }
   };
 
-  const handleEnded = () => {
-    setIsPlaying(false);
-    setHasEnded(true);
-  };
-
-  const replayAnimation = () => {
-    if (videoRef.current) {
-      videoRef.current.currentTime = 2;
-      videoRef.current.play().then(() => {
-        setIsPlaying(true);
-        setHasEnded(false);
-      }).catch(() => {});
-    }
+  const handleSeeked = () => {
+    setIsReady(true);
   };
 
   const videoSrc = isMobile
     ? "/galaxy-s24-ultra-highlights-form-factor-mo.webm"
     : "/galaxy-s24-ultra-highlights-form-factor.webm";
 
-  const posterSrc = isMobile ? "/mobile-poster.jpg" : "/desktop-poster.jpg";
-
   return (
     <section className="hero-keynote-container" id="top" aria-label="Hero Samsung Galaxy">
-      {/* Top Header Information: Apple/Samsung style */}
-      <div className="hero-keynote-header">
+      {/* 1. Video Entrance Animation at the Top: Starts at 3.1s, no loop, no buttons */}
+      <div className="hero-video-stage">
+        <video
+          key={videoSrc}
+          ref={videoRef}
+          className={`hero-entrance-video ${isReady ? 'is-ready' : ''}`}
+          src={videoSrc}
+          autoPlay
+          muted
+          playsInline
+          onLoadedMetadata={handleLoadedMetadata}
+          onSeeked={handleSeeked}
+        />
+      </div>
+
+      {/* 2. Text and Actions strictly BELOW the video */}
+      <div className="hero-keynote-info">
         <h1 className="hero-keynote-title font-samsung-sharp">
           Samsung Galaxy
         </h1>
@@ -63,8 +63,15 @@ export default function HeroCinematic() {
           Uno de los teléfonos insignia de nuestra tienda
         </p>
 
-        {/* Action CTAs */}
+        {/* 3. Action Buttons: "Ver inventario" y "Consultar por WhatsApp" */}
         <div className="hero-keynote-actions">
+          <a href="#catalogo" className="btn-apple-glass font-samsung-bold">
+            <span>Ver inventario</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M7 13l5 5 5-5M7 6l5 5 5-5" />
+            </svg>
+          </a>
+
           {whatsAppUrl ? (
             <a
               href={whatsAppUrl}
@@ -90,46 +97,7 @@ export default function HeroCinematic() {
               <span>Consultar por WhatsApp</span>
             </a>
           )}
-
-          <a href="#highlights" className="btn-apple-glass font-samsung-bold">
-            <span>Ver destacados</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M7 13l5 5 5-5M7 6l5 5 5-5" />
-            </svg>
-          </a>
         </div>
-      </div>
-
-      {/* Hero Showcase Video: Adapted for Devices, starts at 2s, plays once */}
-      <div className="hero-keynote-stage">
-        <video
-          key={videoSrc}
-          ref={videoRef}
-          className="hero-keynote-video"
-          src={videoSrc}
-          poster={posterSrc}
-          autoPlay
-          muted
-          playsInline
-          onLoadedMetadata={handleLoadedMetadata}
-          onEnded={handleEnded}
-        />
-
-        {/* Discreet replay button when animation concludes */}
-        {hasEnded && (
-          <button
-            type="button"
-            className="video-replay-pill font-samsung-bold"
-            onClick={replayAnimation}
-            aria-label="Volver a reproducir animación de entrada"
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="1 4 1 10 7 10" />
-              <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
-            </svg>
-            <span>Volver a ver</span>
-          </button>
-        )}
       </div>
     </section>
   );
