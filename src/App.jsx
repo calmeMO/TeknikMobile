@@ -5,7 +5,7 @@ import HighlightsSection from './components/HighlightsSection';
 import CatalogSection from './components/CatalogSection';
 import Footer from './components/Footer';
 import CameraComparisonModal from './components/CameraComparisonModal';
-import MobileMenuDialog from './components/MobileMenuDialog';
+// MobileMenuDialog removed — the Dynamic Island pill handles mobile expansion
 import { useEntranceMotion } from './hooks/useEntranceMotion';
 
 export default function App() {
@@ -45,18 +45,26 @@ export default function App() {
     setIsCameraModalOpen(false);
   };
 
+  const [activeBrand, setActiveBrand] = useState('all');
+
+  const handleSelectBrand = (brand) => {
+    setActiveBrand(brand);
+  };
+
   return (
     <>
+      {/* Floating Pill Navbar (fixed / sticky floating top) */}
+      <FloatingPillNavbar
+        isMenuOpen={isMenuOpen}
+        onToggleMenu={handleToggleMenu}
+        burgerRef={burgerRef}
+        activeBrand={activeBrand}
+        onSelectBrand={handleSelectBrand}
+      />
+
       <div className="page" ref={pageRef} style={{ display: 'block', minHeight: '100vh', background: '#000000' }}>
         {/* Decorative grain */}
         <div className="grain" aria-hidden="true" />
-
-        {/* Floating Pill Navbar (fixed / sticky floating top) */}
-        <FloatingPillNavbar
-          isMenuOpen={isMenuOpen}
-          onToggleMenu={handleToggleMenu}
-          burgerRef={burgerRef}
-        />
 
         {/* 1. Cinematic Hero with Responsive WebM Videos & Samsung Typography */}
         <HeroCinematic />
@@ -65,7 +73,10 @@ export default function App() {
         <HighlightsSection onOpenCamerasModal={handleOpenCameras} />
 
         {/* 3. Catalog Section with Cinematic Cards & RD$ Pricing */}
-        <CatalogSection />
+        <CatalogSection
+          selectedBrand={activeBrand}
+          onBrandChange={handleSelectBrand}
+        />
 
         {/* 4. Footer */}
         <Footer />
@@ -77,12 +88,7 @@ export default function App() {
         onClose={handleCloseCameras}
       />
 
-      {/* Mobile Menu Dialog Drawer */}
-      <MobileMenuDialog
-        isOpen={isMenuOpen}
-        onClose={handleCloseMenu}
-        openerRef={burgerRef}
-      />
+      {/* Mobile menu is now built into the Dynamic Island pill navbar */}
     </>
   );
 }

@@ -128,6 +128,54 @@ export const catalogProducts = [
       { label: "Chip", value: "A17 Pro Bionic" },
       { label: "Conector", value: "USB-C 10 Gbps" }
     ]
+  },
+  {
+    id: "pixel-9-pro-xl",
+    brand: "pixel",
+    brandLabel: "Google Pixel",
+    name: "Pixel 9 Pro XL",
+    tagline: "El mejor sistema fotográfico computacional del mercado impulsado por Google Tensor G4 y Gemini.",
+    badge: "Fotografía Pro",
+    image: "/images/product-pixel9pro.jpg",
+    colors: [
+      { name: "Obsidian", hex: "#222326" },
+      { name: "Porcelain", hex: "#f1f0eb" },
+      { name: "Hazel", hex: "#83897f" }
+    ],
+    storageOptions: [
+      { capacity: "128 GB", priceDOP: 59900, priceUSD: 1015 },
+      { capacity: "256 GB", priceDOP: 65900, priceUSD: 1115 },
+      { capacity: "512 GB", priceDOP: 73900, priceUSD: 1250 }
+    ],
+    specs: [
+      { label: "Pantalla", value: "6.8\" Super Actua LTPO" },
+      { label: "Cámaras", value: "50 MP + 48 MP 5x Zoom" },
+      { label: "Procesador", value: "Google Tensor G4" },
+      { label: "Batería", value: "5,060 mAh · 37W" }
+    ]
+  },
+  {
+    id: "accesorios-pro-pack",
+    brand: "accesorios",
+    brandLabel: "Accesorios",
+    name: "Kit de Carga Rápida & Audio Pro",
+    tagline: "Cargador GaN 45W ultrarrápido, pad inalámbrico magnético y auriculares Hi-Fi de alta fidelidad.",
+    badge: "Esenciales",
+    image: "/images/product-accessories.jpg",
+    colors: [
+      { name: "Negro Mate", hex: "#1e1e22" },
+      { name: "Blanco Puro", hex: "#f3f3f5" }
+    ],
+    storageOptions: [
+      { capacity: "Kit Esencial", priceDOP: 3890, priceUSD: 65 },
+      { capacity: "Kit Pro Ultra", priceDOP: 6490, priceUSD: 110 }
+    ],
+    specs: [
+      { label: "Potencia", value: "Carga 45W GaN Dual" },
+      { label: "Compatibilidad", value: "Samsung, iPhone & Pixel" },
+      { label: "Conexión", value: "USB-C Power Delivery" },
+      { label: "Garantía", value: "1 año local en RD" }
+    ]
   }
 ];
 

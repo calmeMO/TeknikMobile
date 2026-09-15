@@ -8,8 +8,9 @@ export default function Footer() {
         <div className="footer-grid">
           {/* Brand Col */}
           <div className="footer-col">
-            <h3 className="footer-brand-title font-samsung-sharp">
-              Teknik<span style={{ color: '#86868b' }}> Mobile</span>
+            <h3 className="footer-brand-title font-samsung-sharp" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+              <img src="/logo-teknik-icon.png" alt="" width="24" height="24" style={{ objectFit: 'contain' }} aria-hidden="true" />
+              <span>Teknik<span style={{ color: '#86868b' }}> Mobile</span></span>
             </h3>
             <p className="font-samsung-one" style={{ lineHeight: 1.6, marginBottom: '20px' }}>
               Tu tienda especializada en smartphones insignia y tecnología de última generación en República Dominicana. Equipos 100% originales con garantía local.
@@ -24,10 +25,10 @@ export default function Footer() {
           <div className="footer-col">
             <h4 className="font-samsung-bold">Explorar</h4>
             <ul className="footer-links font-samsung-one">
-              <li><a href="#top">Inicio & Hero</a></li>
-              <li><a href="#highlights">Lo más destacado</a></li>
-              <li><a href="#catalogo">Catálogo Samsung & iPhone</a></li>
-              <li><a href="https://wa.me/18095550199" target="_blank" rel="noopener noreferrer">Consultar por WhatsApp</a></li>
+              <li><a href="#top">Inicio</a></li>
+              <li><a href="#catalogo">Samsung</a></li>
+              <li><a href="#catalogo">Apple</a></li>
+              <li><a href="#catalogo">Pixel & Accesorios</a></li>
             </ul>
           </div>
 
@@ -35,18 +36,18 @@ export default function Footer() {
           <div className="footer-col">
             <h4 className="font-samsung-bold">Garantía & Envíos RD</h4>
             <ul className="footer-links font-samsung-one">
-              <li>✓ Envíos asegurados a Santo Domingo y todo el país</li>
-              <li>✓ Equipos nuevos, sellados en caja</li>
-              <li>✓ Garantía local respaldada por Teknik Mobile</li>
-              <li>✓ Transferencias Banreservas, Popular y BHD</li>
+              <li>✓ Equipos 100% sellados de fábrica</li>
+              <li>✓ Factura y garantía local en RD</li>
+              <li>✓ Envíos a todo el país vía Metro Pac & Caribe Pack</li>
+              <li>✓ Pagos contra entrega en Santo Domingo</li>
             </ul>
           </div>
 
-          {/* Hours & Contact */}
+          {/* Contact Col */}
           <div className="footer-col">
             <h4 className="font-samsung-bold">Contacto Directo</h4>
             <p className="font-samsung-one" style={{ marginBottom: '12px' }}>
-              ¿Tienes preguntas sobre modelos, colores o financiamiento? Escríbenos directamente a nuestro WhatsApp oficial:
+              Escríbenos para cotizaciones inmediatas y disponibilidad de inventario:
             </p>
             <a
               href="https://wa.me/18095550199?text=Hola%20Teknik%20Mobile%2C%20deseo%20m%C3%A1s%20informaci%C3%B3n"
@@ -55,8 +56,8 @@ export default function Footer() {
               className="btn-card-whatsapp font-samsung-bold"
               style={{ display: 'inline-flex' }}
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm5.79 14.07c-.24.68-1.21 1.26-1.74 1.34-.48.07-1.1.1-3.21-.77-2.69-1.12-4.43-3.85-4.57-4.03-.13-.18-1.11-1.48-1.11-2.82 0-1.34.7-2 1-2.28.24-.24.53-.3.71-.3.18 0 .35 0 .5.01.16.01.38-.06.59.45.24.57.82 2 .89 2.15.07.15.12.33.02.53-.1.2-.15.33-.3.51-.15.18-.31.4-.44.54-.15.15-.31.31-.13.62.18.31.79 1.3 1.7 2.11 1.17 1.04 2.16 1.36 2.47 1.51.31.15.49.13.67-.08.18-.21.79-.92 1-1.23.21-.31.43-.26.71-.15.29.1 1.83.86 2.14 1.02.31.15.52.23.59.36.08.12.08.73-.16 1.41z"/>
               </svg>
               <span>+1 (809) 555-0199</span>
             </a>

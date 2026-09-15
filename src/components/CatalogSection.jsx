@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { catalogProducts, formatDOP, buildProductWhatsAppUrl } from '../config/catalogData';
 import { siteConfig } from '../config/siteConfig';
 
-export default function CatalogSection() {
-  const [selectedBrand, setSelectedBrand] = useState('all');
+export default function CatalogSection({ selectedBrand: externalBrand, onBrandChange }) {
+  const [internalBrand, setInternalBrand] = useState('all');
+  const selectedBrand = externalBrand !== undefined ? externalBrand : internalBrand;
+  const setSelectedBrand = onBrandChange || setInternalBrand;
+
   // State for each product's chosen color and storage
   const [productSelections, setProductSelections] = useState(() => {
     const initial = {};
@@ -69,7 +72,7 @@ export default function CatalogSection() {
             role="tab"
             aria-selected={selectedBrand === 'samsung'}
           >
-            Samsung Galaxy
+            Samsung
           </button>
           <button
             type="button"
@@ -78,7 +81,25 @@ export default function CatalogSection() {
             role="tab"
             aria-selected={selectedBrand === 'apple'}
           >
-            Apple iPhone
+            Apple
+          </button>
+          <button
+            type="button"
+            className={`filter-btn ${selectedBrand === 'pixel' ? 'active' : ''}`}
+            onClick={() => setSelectedBrand('pixel')}
+            role="tab"
+            aria-selected={selectedBrand === 'pixel'}
+          >
+            Pixel
+          </button>
+          <button
+            type="button"
+            className={`filter-btn ${selectedBrand === 'accesorios' ? 'active' : ''}`}
+            onClick={() => setSelectedBrand('accesorios')}
+            role="tab"
+            aria-selected={selectedBrand === 'accesorios'}
+          >
+            Accesorios
           </button>
         </div>
       </div>

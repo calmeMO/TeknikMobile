@@ -2,13 +2,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { siteConfig, getWhatsAppUrl } from '../config/siteConfig';
 
-export default function MobileMenuDialog({ isOpen, onClose, openerRef }) {
+export default function MobileMenuDialog({ isOpen, onClose, openerRef, activeBrand = 'all', onSelectBrand }) {
   const [isMounted, setIsMounted] = useState(isOpen);
   const [isClosing, setIsClosing] = useState(false);
   const menuRef = useRef(null);
   const whatsAppUrl = getWhatsAppUrl();
 
-  // Smooth curtain open / close lifecycle
   useEffect(() => {
     if (isOpen) {
       setIsMounted(true);
@@ -25,50 +24,24 @@ export default function MobileMenuDialog({ isOpen, onClose, openerRef }) {
     }
   }, [isOpen]);
 
-  // Handle escape key
   useEffect(() => {
     if (!isOpen) return;
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') {
-        e.preventDefault();
-        onClose();
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    const onKey = (e) => { if (e.key === 'Escape') { e.preventDefault(); onClose(); } };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
   }, [isOpen, onClose]);
 
-  // Close when window resizes to desktop
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(min-width: 901px)');
-    const handleMediaChange = (e) => {
-      if (e.matches && isOpen) {
-        onClose();
-      }
-    };
-
-    if (mediaQuery.addEventListener) {
-      mediaQuery.addEventListener('change', handleMediaChange);
-    } else {
-      mediaQuery.addListener(handleMediaChange);
-    }
-
-    return () => {
-      if (mediaQuery.removeEventListener) {
-        mediaQuery.removeEventListener('change', handleMediaChange);
-      } else {
-        mediaQuery.removeListener(handleMediaChange);
-      }
-    };
+    const mq = window.matchMedia('(min-width: 901px)');
+    const onChange = (e) => { if (e.matches && isOpen) onClose(); };
+    mq.addEventListener ? mq.addEventListener('change', onChange) : mq.addListener(onChange);
+    return () => mq.removeEventListener ? mq.removeEventListener('change', onChange) : mq.removeListener(onChange);
   }, [isOpen, onClose]);
 
-  // Restore focus to opener button when closing
   useEffect(() => {
     return () => {
       document.body.classList.remove('menu-open');
-      if (openerRef?.current && typeof openerRef.current.focus === 'function') {
-        openerRef.current.focus();
-      }
+      if (openerRef?.current?.focus) openerRef.current.focus();
     };
   }, [openerRef]);
 
@@ -84,72 +57,36 @@ export default function MobileMenuDialog({ isOpen, onClose, openerRef }) {
       className={`mobile-menu-curtain ${stateClass}`}
       role="dialog"
       aria-modal="true"
-      aria-label="Menú de navegación móvil"
+      aria-label="Menu de navegacion movil"
     >
-      {/* Background backdrop blur */}
       <div className="mobile-menu-backdrop" onClick={onClose} aria-hidden="true" />
 
-      {/* Main sliding curtain panel */}
       <div className="mobile-menu-panel">
-        {/* Header: Brand and Close (X) icon */}
-        <div className="apple-menu-header">
-          <a href="#top" className="logo font-samsung-sharp" onClick={onClose}>
-            <svg
-              className="logo-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <rect x="6" y="2" width="12" height="20" rx="3" />
-              <path d="M10 5h4M11 19h2" />
-            </svg>
-            <span>
-              {siteConfig.brandName} <span className="logo-suffix">{siteConfig.brandSuffix}</span>
-            </span>
-          </a>
-
-          <button
-            type="button"
-            className="apple-close-btn"
-            onClick={onClose}
-            aria-label="Cerrar menú"
-          >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <line x1="18" y1="6" x2="6" y2="18" />
-              <line x1="6" y1="6" x2="18" y2="18" />
-            </svg>
-          </button>
-        </div>
-
-        {/* Apple-style typography navigation: links top, action button bottom */}
         <nav className="apple-menu-nav" aria-label="Navegación móvil">
           <div className="apple-menu-links">
             {siteConfig.categories.map((item, index) => {
+              const isSelected = item.brand && item.brand !== 'all' ? activeBrand === item.brand : false;
               return (
                 <a
                   key={item.id}
                   href={item.href || '#top'}
-                  className="apple-nav-item font-samsung-bold"
+                  className={`apple-nav-item font-samsung-bold ${isSelected ? 'active' : ''}`}
                   style={{ '--i': index }}
-                  aria-current={item.active ? 'page' : undefined}
-                  onClick={onClose}
+                  aria-current={isSelected ? 'page' : undefined}
+                  onClick={() => {
+                    if (item.brand) onSelectBrand?.(item.brand);
+                    onClose();
+                  }}
                 >
                   <span className="apple-nav-label">{item.label}</span>
-                  <span className="apple-nav-arrow" aria-hidden="true">→</span>
                 </a>
               );
             })}
           </div>
 
-          {/* Bottom Area: Action Button strictly at the bottom */}
           <div className="apple-menu-bottom" style={{ '--i': siteConfig.categories.length }}>
             <div className="apple-menu-divider" />
-
-            {whatsAppUrl ? (
+            {whatsAppUrl && (
               <a
                 href={whatsAppUrl}
                 className="btn btn-solid apple-whatsapp-btn font-samsung-bold"
@@ -157,30 +94,18 @@ export default function MobileMenuDialog({ isOpen, onClose, openerRef }) {
                 rel="noopener noreferrer"
                 onClick={onClose}
               >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
-                </svg>
-                <span>Consultar por WhatsApp</span>
-              </a>
-            ) : (
-              <a
-                href="#top"
-                className="btn btn-solid apple-whatsapp-btn"
-                onClick={onClose}
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm5.79 14.07c-.24.68-1.21 1.26-1.74 1.34-.48.07-1.1.1-3.21-.77-2.69-1.12-4.43-3.85-4.57-4.03-.13-.18-1.11-1.48-1.11-2.82 0-1.34.7-2 1-2.28.24-.24.53-.3.71-.3.18 0 .35 0 .5.01.16.01.38-.06.59.45.24.57.82 2 .89 2.15.07.15.12.33.02.53-.1.2-.15.33-.3.51-.15.18-.31.4-.44.54-.15.15-.31.31-.13.62.18.31.79 1.3 1.7 2.11 1.17 1.04 2.16 1.36 2.47 1.51.31.15.49.13.67-.08.18-.21.79-.92 1-1.23.21-.31.43-.26.71-.15.29.1 1.83.86 2.14 1.02.31.15.52.23.59.36.08.12.08.73-.16 1.41z" />
                 </svg>
                 <span>Consultar por WhatsApp</span>
               </a>
             )}
-
             <div className="apple-menu-location">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
                 <circle cx="12" cy="10" r="3" />
               </svg>
-              <span>República Dominicana • Envíos a todo el país</span>
+              <span>Republica Dominicana - Envios a todo el pais</span>
             </div>
           </div>
         </nav>

@@ -1,6 +1,26 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export default function CameraComparisonModal({ isOpen, onClose }) {
+  const [isMounted, setIsMounted] = useState(isOpen);
+  const [isClosing, setIsClosing] = useState(false);
+
+  // Smooth Apple lifecycle animation (enter and exit)
+  useEffect(() => {
+    if (isOpen) {
+      setIsMounted(true);
+      setIsClosing(false);
+      document.body.classList.add('modal-open');
+    } else if (isMounted) {
+      setIsClosing(true);
+      const timer = setTimeout(() => {
+        setIsMounted(false);
+        setIsClosing(false);
+        document.body.classList.remove('modal-open');
+      }, 260);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape' && isOpen) {
@@ -11,11 +31,11 @@ export default function CameraComparisonModal({ isOpen, onClose }) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
+  if (!isMounted && !isOpen) return null;
 
   return (
     <div
-      className="camera-modal-backdrop"
+      className={`camera-modal-backdrop ${isClosing ? 'is-closing' : 'is-open'}`}
       onClick={onClose}
       role="dialog"
       aria-modal="true"

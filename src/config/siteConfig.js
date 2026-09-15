@@ -18,38 +18,52 @@ export const siteConfig = {
   categories: [
     {
       id: "inicio",
+      brand: "all",
       label: "Inicio",
       href: "#top",
       active: true,
       appearClass: "appear--scale",
-      delay: "0.16s",
+      delay: "0.14s",
       enabled: true
     },
     {
-      id: "destacados",
-      label: "Destacados",
-      href: "#highlights",
-      active: false,
-      appearClass: "appear--soft",
-      delay: "0.24s",
-      enabled: true
-    },
-    {
-      id: "catalogo",
-      label: "Catálogo",
+      id: "samsung",
+      brand: "samsung",
+      label: "Samsung",
       href: "#catalogo",
       active: false,
-      appearClass: "appear--scale",
+      appearClass: "appear--soft",
+      delay: "0.20s",
+      enabled: true
+    },
+    {
+      id: "apple",
+      brand: "apple",
+      label: "Apple",
+      href: "#catalogo",
+      active: false,
+      appearClass: "appear--soft",
+      delay: "0.26s",
+      enabled: true
+    },
+    {
+      id: "pixel",
+      brand: "pixel",
+      label: "Pixel",
+      href: "#catalogo",
+      active: false,
+      appearClass: "appear--soft",
       delay: "0.32s",
       enabled: true
     },
     {
-      id: "contacto",
-      label: "Contacto RD",
-      href: "#contacto",
+      id: "accesorios",
+      brand: "accesorios",
+      label: "Accesorios",
+      href: "#catalogo",
       active: false,
-      appearClass: "appear--soft",
-      delay: "0.40s",
+      appearClass: "appear--scale",
+      delay: "0.38s",
       enabled: true
     }
   ]
