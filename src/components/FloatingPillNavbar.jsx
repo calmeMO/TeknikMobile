@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { siteConfig, getWhatsAppUrl } from '../config/siteConfig';
 
@@ -18,7 +18,7 @@ export default function FloatingPillNavbar({
   const [isMounted, setIsMounted] = useState(isMenuOpen);
   const [isClosing, setIsClosing] = useState(false);
 
-  // Scroll listener: pill morph strictly on scroll past threshold (Apple motion feel)
+  // Scroll listener: morphs to floating pill strictly on scroll past threshold
   useEffect(() => {
     const SCROLL_THRESHOLD = 50;
 
@@ -40,21 +40,24 @@ export default function FloatingPillNavbar({
 
   // Body scroll lock & transition controller
   useEffect(() => {
+    let timer;
     if (isMenuOpen) {
       setIsMounted(true);
       setIsClosing(false);
       document.body.classList.add('menu-open');
     } else if (isMounted) {
       setIsClosing(true);
-      // Asymmetric timing: Exit is faster than enter (200ms)
-      const timer = setTimeout(() => {
+      // Synchronized with CSS closing animation (350ms)
+      timer = setTimeout(() => {
         setIsMounted(false);
         setIsClosing(false);
         document.body.classList.remove('menu-open');
-      }, 200);
-      return () => clearTimeout(timer);
+      }, 350);
     }
-  }, [isMenuOpen, isMounted]);
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [isMenuOpen]);
 
   // Cleanup body scroll lock on unmount
   useEffect(() => {
@@ -234,7 +237,10 @@ export default function FloatingPillNavbar({
                 key={item.id}
                 href={item.href}
                 className="apple-fullscreen-link font-samsung-sharp"
-                style={{ '--i': index }}
+                style={{
+                  '--i': index,
+                  '--rev-i': menuItems.length - 1 - index
+                }}
                 onClick={() => handleNavClick(item.brand, item.href)}
               >
                 {item.label}

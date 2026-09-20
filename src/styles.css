@@ -48,6 +48,52 @@ html {
   scroll-behavior: smooth;
 }
 
+/* ==========================================================================
+   Custom Semi-Transparent Black Scrollbar (Desktop / PC)
+   ========================================================================== */
+@media (min-width: 901px) {
+  /* Standards (Firefox & modern browsers) */
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.22) rgba(0, 0, 0, 0.5);
+  }
+
+  /* Webkit / Chromium (Chrome, Edge, Safari, Opera) */
+  ::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.5);
+    border-left: 1px solid rgba(255, 255, 255, 0.04);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.18);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    transition: background 0.2s ease;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.32);
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+
+  ::-webkit-scrollbar-thumb:active {
+    background: rgba(255, 255, 255, 0.45);
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: rgba(0, 0, 0, 0.5);
+  }
+}
+
 /* Enforce pure black background and prevent flash */
 html,
 body,
@@ -244,7 +290,8 @@ header.header {
   right: 0;
   z-index: 1100;
   pointer-events: none;
-  padding: 18px 24px 10px;
+  /* Default: edge-to-edge fused with hero (no horizontal padding) */
+  padding: 18px 0 10px;
   padding-top: max(18px, env(safe-area-inset-top, 0px));
   transition: padding 0.52s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -265,18 +312,16 @@ header.header.is-expanded {
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 960px;
+  /* Default: full width, edge-to-edge, seamlessly fused with hero */
+  max-width: 100%;
   margin-inline: auto;
   border-radius: 9999px;
   font-family: 'SamsungOne', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background: rgba(20, 20, 22, 0.52);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  backdrop-filter: blur(20px) saturate(170%);
-  -webkit-backdrop-filter: blur(20px) saturate(170%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.05),
-    0 4px 20px rgba(0, 0, 0, 0.3),
-    0 1px 4px rgba(0, 0, 0, 0.15);
+  background: transparent;
+  border: 1px solid transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
   animation: diPillAppear 0.58s cubic-bezier(0.16, 1, 0.3, 1) 0.06s both;
   transition:
     max-width 0.52s cubic-bezier(0.16, 1, 0.3, 1),
@@ -286,7 +331,7 @@ header.header.is-expanded {
     border-radius 0.42s cubic-bezier(0.16, 1, 0.3, 1),
     backdrop-filter 0.52s cubic-bezier(0.16, 1, 0.3, 1) 0.04s,
     -webkit-backdrop-filter 0.52s cubic-bezier(0.16, 1, 0.3, 1) 0.04s;
-  will-change: border-radius, box-shadow;
+  will-change: max-width, background, border-color, box-shadow;
 }
 
 @keyframes diPillAppear {
@@ -301,7 +346,9 @@ header.header.is-expanded {
   }
 }
 
+/* Pill state: activated strictly on scroll — contracts into floating capsule */
 .floating-pill-navbar.is-pill {
+  max-width: 960px;
   background: rgba(20, 20, 22, 0.82);
   border-color: rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(28px) saturate(190%);
@@ -318,6 +365,12 @@ header.header.is-expanded {
   align-items: center;
   gap: 20px;
   min-height: 50px;
+  /* Default fused state: aligned with page edge margins */
+  padding: 6px var(--header-x);
+  transition: padding 0.52s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.floating-pill-navbar.is-pill .di-main-row {
   padding: 6px 12px 6px 20px;
 }
 
@@ -361,12 +414,12 @@ a.logo:active {
   0%,
   100% {
     filter:
-      drop-shadow(0 1px 3px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 0px rgba(255, 255, 255, 0));
+      drop-shadow(0 1px 3px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 0px rgba(253, 246, 4, 0));
   }
 
   50% {
     filter:
-      drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.55));
+      drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 10px rgba(253, 246, 4, 0.45));
   }
 }
 
@@ -418,13 +471,14 @@ a.logo:active {
   display: block;
 }
 
+/* Optical vertical centering: align-items center + top: 3.5px perfectly centers text with icon center */
 .logo-text {
   display: inline-flex;
-  align-items: baseline;
-  gap: 5px;
+  align-items: center;
+  gap: 4px;
   line-height: 1;
   position: relative;
-  top: 0.5px;
+  top: 3.5px;
 }
 
 .logo-suffix {
@@ -1080,6 +1134,11 @@ header.header.is-menu-open .header-cta {
   display: none !important;
 }
 
+body.menu-open {
+  overflow: hidden !important;
+  touch-action: none;
+}
+
 .apple-fullscreen-menu {
   position: fixed;
   inset: 0;
@@ -1112,28 +1171,33 @@ header.header.is-menu-open .header-cta {
 }
 
 .apple-fullscreen-menu.is-closing {
-  animation: appleMenuFadeOut 0.18s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  animation: appleMenuFadeOut 0.34s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .apple-fullscreen-links {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 0 4px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: clamp(22px, 3.8vh, 32px);
+  padding: 16px 4px;
   flex: 1 0 auto;
 }
 
 .apple-fullscreen-link {
   font-family: 'SamsungSharpSans', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: clamp(17px, 4.4vw, 20px);
+  font-size: clamp(26px, 7vw, 34px);
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
   line-height: 1.25;
   color: #ffffff;
   text-decoration: none;
+  text-align: center;
   cursor: pointer;
   display: inline-block;
-  width: fit-content;
+  width: auto;
+  padding: 2px 16px;
   transition:
     color 0.18s ease,
     transform var(--apple-duration-press) var(--ease-apple-press);
@@ -1145,8 +1209,13 @@ header.header.is-menu-open .header-cta {
   animation-delay: calc(var(--i, 0) * 32ms + 40ms);
 }
 
+.apple-fullscreen-menu.is-closing .apple-fullscreen-link {
+  animation: appleItemExit 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: calc(var(--rev-i, var(--i, 0)) * 20ms);
+}
+
 .apple-fullscreen-link:active {
-  transform: scale(0.98);
+  transform: scale(0.96);
   color: rgba(255, 255, 255, 0.5);
 }
 
@@ -1158,8 +1227,10 @@ header.header.is-menu-open .header-cta {
 
 .apple-fullscreen-footer {
   margin-top: auto;
-  padding: 32px 0 0;
+  padding: 24px 0 0;
   width: 100%;
+  display: flex;
+  justify-content: center;
   flex-shrink: 0;
   box-sizing: border-box;
 }
@@ -1169,8 +1240,15 @@ header.header.is-menu-open .header-cta {
   animation-delay: 240ms;
 }
 
+.apple-fullscreen-menu.is-closing .apple-fullscreen-footer {
+  animation: appleItemExit 0.20s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0ms;
+}
+
 .apple-whatsapp-btn {
   width: 100%;
+  max-width: 380px;
+  margin-inline: auto;
   min-height: 52px;
   display: inline-flex;
   align-items: center;
@@ -1226,32 +1304,48 @@ header.header.is-menu-open .header-cta {
 @keyframes appleMenuFadeIn {
   0% {
     opacity: 0;
+    transform: translateY(-12px);
   }
 
   100% {
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
 @keyframes appleMenuFadeOut {
   0% {
     opacity: 1;
+    transform: translateY(0);
   }
 
   100% {
     opacity: 0;
+    transform: translateY(-12px);
   }
 }
 
 @keyframes appleItemEnter {
   0% {
     opacity: 0;
-    transform: translateY(-8px);
+    transform: translateY(-22px);
   }
 
   100% {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes appleItemExit {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-22px);
   }
 }
 
@@ -1388,14 +1482,16 @@ header.header.is-menu-open .header-cta {
     --lede-max: 440px;
   }
 
-  .floating-pill-navbar {
+  .di-main-row {
     gap: 12px;
-    padding: 8px var(--header-x);
   }
 
   .floating-pill-navbar.is-pill {
     max-width: 920px;
-    padding: 8px 16px;
+  }
+
+  .floating-pill-navbar.is-pill .di-main-row {
+    padding: 6px 12px 6px 16px;
   }
 
   #site-nav {
@@ -1614,10 +1710,6 @@ header.header.is-menu-open .header-cta {
     padding: 0 14px;
   }
 
-  .floating-pill-navbar {
-    padding: 5px 10px;
-  }
-
   .hero h1 {
     white-space: normal;
   }
@@ -1676,12 +1768,12 @@ header.header.is-menu-open .header-cta {
 @keyframes appleHeroVideoIn {
   0% {
     opacity: 0;
-    transform: scale(0.97) translateY(8px);
+    transform: scale(calc(var(--hero-video-scale, 1) * 0.95)) translateY(10px);
   }
 
   100% {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: scale(var(--hero-video-scale, 1)) translateY(0);
   }
 }
 
@@ -1722,14 +1814,14 @@ header.header.is-menu-open .header-cta {
 }
 
 /* ==========================================================================
-   VIDEO STAGE — AUMENTADO
+   VIDEO STAGE — MÁXIMA INMERSIÓN
    ========================================================================== */
 
 .hero-video-stage {
   position: relative;
   width: 100%;
   max-width: 1800px;
-  flex: 1 1 0%;
+  flex: 1 1 auto;
   min-height: 0;
   display: flex;
   justify-content: center;
@@ -1737,19 +1829,21 @@ header.header.is-menu-open .header-cta {
   padding: 0;
   margin: 0;
   margin-top: -10px;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .hero-entrance-video {
+  --hero-video-scale: 1.12;
   width: 100%;
   height: 100%;
   max-width: 100%;
   max-height: 100%;
-  aspect-ratio: 2 / 1;
+  aspect-ratio: auto;
   object-fit: contain;
   object-position: center;
   background: transparent;
   opacity: 0;
+  transform: scale(var(--hero-video-scale, 1));
   will-change: transform, opacity;
 }
 
@@ -1758,7 +1852,7 @@ header.header.is-menu-open .header-cta {
 }
 
 /* ==========================================================================
-   Hero Keynote Information
+   Hero Keynote Information & Typography
    ========================================================================== */
 
 .hero-keynote-info {
@@ -1772,30 +1866,31 @@ header.header.is-menu-open .header-cta {
   flex-direction: column;
   align-items: center;
   box-sizing: border-box;
-  margin-bottom: clamp(2px, 0.8vh, 8px);
+  margin-top: -12px;
+  margin-bottom: clamp(32px, 5vh, 56px);
 }
 
 .hero-keynote-title {
   font-family: 'SamsungSharpSans', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: clamp(24px, 3.4vh, 40px);
+  font-size: clamp(32px, 4.4vh, 48px);
   font-weight: 700;
   color: #ffffff;
-  line-height: 1.08;
+  line-height: 1.1;
   letter-spacing: -0.025em;
   text-align: center;
-  margin: 0 0 clamp(3px, 0.7vh, 6px) 0;
+  margin: 0 0 clamp(4px, 0.9vh, 8px) 0;
   animation: appleHeroTitleIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.16s both;
   will-change: transform, opacity;
 }
 
 .hero-keynote-subtitle {
   font-family: 'SamsungOne', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: clamp(12px, 1.5vh, 15px);
+  font-size: clamp(14px, 1.8vh, 17px);
   font-weight: 400;
-  color: #86868b;
+  color: #a1a1a6;
   text-align: center;
-  margin: 0 0 clamp(8px, 1.4vh, 14px) 0;
-  line-height: 1.35;
+  margin: 0 0 clamp(12px, 1.8vh, 18px) 0;
+  line-height: 1.4;
   padding: 0 8px;
   animation: appleHeroSubtitleIn 0.52s cubic-bezier(0.16, 1, 0.3, 1) 0.24s both;
   will-change: transform, opacity;
@@ -1813,27 +1908,31 @@ header.header.is-menu-open .header-cta {
 }
 
 /* ==========================================================================
-   Hero Inventory Button
+   Hero Action Buttons: Minimalist Dark Theme (Ver Catálogo & Contacto)
+   Crafted with Emil Kowalski Design Engineering Principles:
+   - Specific properties (no transition: all)
+   - Custom strong ease-out: cubic-bezier(0.23, 1, 0.32, 1)
+   - Active press feedback: scale(0.97) with asymmetric timing (80ms press / 160ms release)
+   - Hover micro-interactions gated behind fine pointer
    ========================================================================== */
 
+.btn-hero-catalog,
 .btn-hero-inventory {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
-  padding: 10px 22px;
+  gap: 8px;
+  padding: 10px 24px;
   min-height: 42px;
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.9);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.22),
-    0 4px 16px rgba(0, 0, 0, 0.25);
+    0 4px 16px rgba(255, 255, 255, 0.12),
+    0 2px 6px rgba(0, 0, 0, 0.25);
   font-family: 'SamsungOne', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: -0.015em;
   text-decoration: none;
@@ -1842,7 +1941,7 @@ header.header.is-menu-open .header-cta {
   outline: none;
   cursor: pointer;
   transition:
-    transform 140ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 160ms cubic-bezier(0.23, 1, 0.32, 1),
     background-color 160ms ease-out,
     border-color 160ms ease-out,
     box-shadow 160ms ease-out,
@@ -1850,44 +1949,46 @@ header.header.is-menu-open .header-cta {
   will-change: transform;
 }
 
+.btn-hero-catalog svg,
 .btn-hero-inventory svg {
   flex-shrink: 0;
-  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 180ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 
+.btn-hero-catalog:focus-visible,
 .btn-hero-inventory:focus-visible {
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.35),
-    0 0 0 3px rgba(255, 255, 255, 0.4),
+    0 0 0 3px rgba(255, 255, 255, 0.5),
     0 4px 16px rgba(0, 0, 0, 0.25);
 }
 
+/* Emil Kowalski: Asymmetric press timing (80ms press, 160ms release) */
+.btn-hero-catalog:active,
 .btn-hero-inventory:active {
   transform: scale(0.97);
-  background-color: rgba(255, 255, 255, 0.16);
-  border-color: rgba(255, 255, 255, 0.24);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.14),
-    0 2px 8px rgba(0, 0, 0, 0.25);
+  background-color: #dcdce0;
+  transition-duration: 80ms;
 }
 
-/* ==========================================================================
-   Hero WhatsApp Button
-   ========================================================================== */
-
+.btn-hero-contact,
 .btn-hero-whatsapp {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 11px 26px;
+  padding: 10px 24px;
   min-height: 42px;
   border-radius: 9999px;
-  background: linear-gradient(180deg, #2ee06e 0%, #25d366 100%);
-  color: #000000;
-  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 4px 16px rgba(0, 0, 0, 0.25);
   font-family: 'SamsungOne', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: -0.015em;
   text-decoration: none;
@@ -1895,66 +1996,67 @@ header.header.is-menu-open .header-cta {
   -webkit-tap-highlight-color: transparent;
   outline: none;
   cursor: pointer;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.45),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.12),
-    0 4px 20px rgba(37, 211, 102, 0.42),
-    0 1px 3px rgba(0, 0, 0, 0.2);
   transition:
-    transform 140ms cubic-bezier(0.16, 1, 0.3, 1),
-    background 160ms ease-out,
+    transform 160ms cubic-bezier(0.23, 1, 0.32, 1),
+    background-color 160ms ease-out,
     border-color 160ms ease-out,
     box-shadow 160ms ease-out;
   will-change: transform;
 }
 
+.btn-hero-contact svg,
 .btn-hero-whatsapp svg {
   flex-shrink: 0;
-  color: #000000;
+  color: #ffffff;
+  transition: transform 180ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 
+.btn-hero-contact:focus-visible,
 .btn-hero-whatsapp:focus-visible {
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.5),
-    0 0 0 3px rgba(37, 211, 102, 0.5),
-    0 4px 20px rgba(37, 211, 102, 0.42);
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 0 0 3px rgba(255, 255, 255, 0.4),
+    0 4px 16px rgba(0, 0, 0, 0.25);
 }
 
+/* Emil Kowalski: Asymmetric press timing (80ms press, 160ms release) */
+.btn-hero-contact:active,
 .btn-hero-whatsapp:active {
   transform: scale(0.97);
-  background: #20b858;
-  border-color: rgba(255, 255, 255, 0.18);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.2),
-    0 2px 10px rgba(37, 211, 102, 0.35);
+  background-color: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.28);
+  transition-duration: 80ms;
 }
 
 @media (hover: hover) and (pointer: fine) {
+  .btn-hero-catalog:hover,
   .btn-hero-inventory:hover {
-    background-color: rgba(255, 255, 255, 0.13);
-    border-color: rgba(255, 255, 255, 0.32);
+    background-color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow:
+      0 8px 24px rgba(255, 255, 255, 0.22),
+      0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .btn-hero-catalog:hover svg,
+  .btn-hero-inventory:hover svg {
+    transform: scale(1.1) translateY(-0.5px);
+  }
+
+  .btn-hero-contact:hover,
+  .btn-hero-whatsapp:hover {
+    background-color: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.35);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.35),
-      0 8px 24px rgba(0, 0, 0, 0.35);
-    transform: translateY(-1.5px);
+      0 8px 24px rgba(0, 0, 0, 0.4);
+    transform: translateY(-2px);
     color: #ffffff;
   }
 
-  .btn-hero-inventory:hover svg {
-    transform: translateY(2px);
-  }
-
-  .btn-hero-whatsapp:hover {
-    background: linear-gradient(180deg,
-        #36e877 0%,
-        #28db6b 100%);
-    border-color: rgba(255, 255, 255, 0.45);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.6),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.1),
-      0 8px 28px rgba(37, 211, 102, 0.6);
-    transform: translateY(-1.5px);
-    color: #000000;
+  .btn-hero-contact:hover svg,
+  .btn-hero-whatsapp:hover svg {
+    transform: scale(1.1) translateY(-0.5px);
   }
 }
 
@@ -2028,73 +2130,82 @@ header.header.is-menu-open .header-cta {
 
 @media (max-width: 768px) {
   .hero-keynote-container {
-    padding-top: calc(max(6px, env(safe-area-inset-top, 0px)) + 42px);
-    padding-bottom: max(28px,
-        calc(env(safe-area-inset-bottom, 0px) + 20px));
+    padding-top: calc(max(6px, env(safe-area-inset-top, 0px)) + 40px);
+    padding-bottom: max(32px,
+        calc(env(safe-area-inset-bottom, 0px) + 24px));
     padding-left: 16px;
     padding-right: 16px;
   }
 
   /*
-   * El escenario sigue limitado a 440px para móviles,
-   * pero ahora el video ocupa completamente el espacio disponible.
+   * Escenario ampliado para máxima inmersión del teléfono
    */
   .hero-video-stage {
-    max-width: 440px;
+    max-width: 520px;
     width: 100%;
     padding: 0;
-    margin-top: -10px;
+    margin-top: -12px;
+    margin-bottom: 0;
+    overflow: visible;
   }
 
   .hero-entrance-video {
+    --hero-video-scale: 1.28;
     width: 100%;
     height: 100%;
     max-width: 100%;
-    max-height: 100%;
-    aspect-ratio: 1 / 2;
+    max-height: 52vh;
+    aspect-ratio: auto;
     object-fit: contain;
     object-position: center;
     -webkit-mask-image: linear-gradient(to bottom,
-        black 65%,
-        transparent 98%);
+        black 74%,
+        transparent 100%);
     mask-image: linear-gradient(to bottom,
-        black 65%,
-        transparent 98%);
+        black 74%,
+        transparent 100%);
   }
 
   .hero-keynote-info {
-    max-width: 420px;
+    max-width: 440px;
     padding: 0;
     flex-shrink: 0;
-    margin-bottom: 2px;
+    margin-top: -16px;
+    margin-bottom: clamp(34px, 6.8vh, 56px);
   }
 
   .hero-keynote-title {
-    font-size: clamp(20px, 5.8vw, 26px);
-    margin-bottom: 4px;
+    font-size: clamp(24px, 7vw, 32px);
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    margin-bottom: 6px;
   }
 
   .hero-keynote-subtitle {
-    font-size: clamp(11.5px, 3vw, 13px);
-    margin-bottom: 10px;
-    padding: 0 4px;
+    font-size: clamp(13px, 3.8vw, 15px);
+    color: #a1a1a6;
+    line-height: 1.38;
+    margin-bottom: 14px;
+    padding: 0 8px;
   }
 
   .hero-keynote-actions {
-    flex-direction: column;
-    gap: 8px;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 0 8px;
   }
 
-  .btn-hero-inventory {
-    padding: 8.5px 22px;
-    font-size: 13px;
-    min-height: 40px;
-  }
-
+  .btn-hero-catalog,
+  .btn-hero-inventory,
+  .btn-hero-contact,
   .btn-hero-whatsapp {
-    padding: 10.5px 26px;
+    flex: 1;
+    max-width: 160px;
+    padding: 9.5px 18px;
     font-size: 13.5px;
-    min-height: 42px;
+    min-height: 40px;
   }
 }
 
@@ -2102,38 +2213,46 @@ header.header.is-menu-open .header-cta {
 @media (max-height: 700px) and (max-width: 768px) {
   .hero-keynote-container {
     padding-top: calc(max(4px, env(safe-area-inset-top, 0px)) + 36px);
-    padding-bottom: max(18px,
-        calc(env(safe-area-inset-bottom, 0px) + 12px));
+    padding-bottom: max(20px,
+        calc(env(safe-area-inset-bottom, 0px) + 14px));
   }
 
   .hero-video-stage {
-    margin-top: -6px;
+    margin-top: -8px;
+  }
+
+  .hero-entrance-video {
+    --hero-video-scale: 1.2;
+    max-height: 44vh;
+  }
+
+  .hero-keynote-info {
+    margin-top: -10px;
+    margin-bottom: 22px;
   }
 
   .hero-keynote-title {
-    font-size: 18px;
-    margin-bottom: 2px;
+    font-size: 20px;
+    margin-bottom: 3px;
   }
 
   .hero-keynote-subtitle {
-    font-size: 11px;
-    margin-bottom: 6px;
+    font-size: 11.5px;
+    margin-bottom: 8px;
   }
 
   .hero-keynote-actions {
-    gap: 6px;
+    gap: 8px;
   }
 
-  .btn-hero-inventory {
-    padding: 7px 18px;
+  .btn-hero-catalog,
+  .btn-hero-inventory,
+  .btn-hero-contact,
+  .btn-hero-whatsapp {
+    padding: 7px 14px;
     font-size: 12px;
     min-height: 36px;
-  }
-
-  .btn-hero-whatsapp {
-    padding: 8.5px 20px;
-    font-size: 12.5px;
-    min-height: 38px;
+    max-width: 140px;
   }
 }
 
@@ -2144,7 +2263,7 @@ header.header.is-menu-open .header-cta {
   .hero-keynote-subtitle,
   .hero-keynote-actions {
     animation: fadeIn 0.25s ease forwards !important;
-    transform: none !important;
+    transform: scale(var(--hero-video-scale, 1)) !important;
     opacity: 1 !important;
   }
 }
@@ -3173,14 +3292,16 @@ header.header.is-menu-open .header-cta {
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    border-color: var(--border);
+    outline-color: color-mix(in srgb, var(--ring) 50%, transparent);
   }
 
   body {
-    @apply bg-background text-foreground;
+    background-color: var(--background);
+    color: var(--foreground);
   }
 
   html {
-    @apply font-sans;
+    font-family: var(--font-sans);
   }
 }
