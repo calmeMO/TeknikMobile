@@ -1,7 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import FloatingPillNavbar from './components/FloatingPillNavbar';
 import HeroCinematic from './components/HeroCinematic';
-import HighlightsSection from './components/HighlightsSection';
+import BrandCarouselSection from './components/BrandCarouselSection';
 import CatalogSection from './components/CatalogSection';
 import Footer from './components/Footer';
 import CameraComparisonModal from './components/CameraComparisonModal';
@@ -16,6 +16,20 @@ export default function App() {
 
   // Hook for native animationend and 2-rAF fallback
   useEntranceMotion(pageRef);
+
+  const [isHeroReady, setIsHeroReady] = useState(false);
+
+  // Emil Kowalski safety fallback: ensure all elements reveal even if video stalls
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsHeroReady(true);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleHeroReady = () => {
+    setIsHeroReady(true);
+  };
 
   const handleOpenMenu = () => {
     setIsMenuOpen(true);
@@ -60,6 +74,7 @@ export default function App() {
         burgerRef={burgerRef}
         activeBrand={activeBrand}
         onSelectBrand={handleSelectBrand}
+        isHeroReady={isHeroReady}
       />
 
       <div className="page" ref={pageRef} style={{ display: 'block', minHeight: '100vh', background: '#000000' }}>
@@ -67,10 +82,10 @@ export default function App() {
         <div className="grain" aria-hidden="true" />
 
         {/* 1. Cinematic Hero with Responsive WebM Videos & Samsung Typography */}
-        <HeroCinematic />
+        <HeroCinematic onVideoReady={handleHeroReady} />
 
-        {/* 2. Highlights Section ("Mira lo más destacado") */}
-        <HighlightsSection onOpenCamerasModal={handleOpenCameras} />
+        {/* 2. Explora por Categoría (Carrusel estilo Apple Family en Dark Mode con pastilla amarilla) */}
+        <BrandCarouselSection onSelectBrand={handleSelectBrand} />
 
         {/* 3. Catalog Section with Cinematic Cards & RD$ Pricing */}
         <CatalogSection

@@ -322,7 +322,7 @@ header.header.is-expanded {
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   box-shadow: none;
-  animation: diPillAppear 0.58s cubic-bezier(0.16, 1, 0.3, 1) 0.06s both;
+  animation: emilNavbarIn 0.48s cubic-bezier(0.23, 1, 0.32, 1) 0.36s both;
   transition:
     max-width 0.52s cubic-bezier(0.16, 1, 0.3, 1),
     background 0.48s cubic-bezier(0.16, 1, 0.3, 1) 0.04s,
@@ -334,15 +334,15 @@ header.header.is-expanded {
   will-change: max-width, background, border-color, box-shadow;
 }
 
-@keyframes diPillAppear {
+@keyframes emilNavbarIn {
   0% {
     opacity: 0;
-    transform: scale(0.96);
+    transform: translateY(-8px) scale(0.98);
   }
 
   100% {
     opacity: 1;
-    transform: scale(1);
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -1762,13 +1762,19 @@ body.menu-open {
 }
 
 /* ==========================================================================
-   Hero Keynote Apple Motion Feel Entrance Animation
+   Hero Keynote Choreographed Entrance Animation (Emil Kowalski Design)
+   Sequence:
+   1. Video enters first (0s, cubic-bezier(0.23, 1, 0.32, 1))
+   2. Navbar enters at 0.36s
+   3. Title enters at 0.44s
+   4. Subtitle enters at 0.52s (80ms stagger)
+   5. Actions enter at 0.60s (80ms stagger)
    ========================================================================== */
 
-@keyframes appleHeroVideoIn {
+@keyframes emilHeroVideoIn {
   0% {
     opacity: 0;
-    transform: scale(calc(var(--hero-video-scale, 1) * 0.95)) translateY(10px);
+    transform: scale(calc(var(--hero-video-scale, 1) * 0.95)) translateY(12px);
   }
 
   100% {
@@ -1777,19 +1783,19 @@ body.menu-open {
   }
 }
 
-@keyframes appleHeroTitleIn {
+@keyframes emilHeroTitleIn {
   0% {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(14px) scale(0.98);
   }
 
   100% {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
-@keyframes appleHeroSubtitleIn {
+@keyframes emilHeroSubtitleIn {
   0% {
     opacity: 0;
     transform: translateY(12px);
@@ -1801,15 +1807,15 @@ body.menu-open {
   }
 }
 
-@keyframes appleHeroActionsIn {
+@keyframes emilHeroActionsIn {
   0% {
     opacity: 0;
-    transform: scale(0.98) translateY(10px);
+    transform: translateY(10px) scale(0.98);
   }
 
   100% {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -1842,13 +1848,8 @@ body.menu-open {
   object-fit: contain;
   object-position: center;
   background: transparent;
-  opacity: 0;
-  transform: scale(var(--hero-video-scale, 1));
+  animation: emilHeroVideoIn 0.56s cubic-bezier(0.23, 1, 0.32, 1) 0.04s both;
   will-change: transform, opacity;
-}
-
-.hero-entrance-video.is-ready {
-  animation: appleHeroVideoIn 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.04s both;
 }
 
 /* ==========================================================================
@@ -1878,8 +1879,9 @@ body.menu-open {
   line-height: 1.1;
   letter-spacing: -0.025em;
   text-align: center;
+  text-wrap: balance;
   margin: 0 0 clamp(4px, 0.9vh, 8px) 0;
-  animation: appleHeroTitleIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.16s both;
+  animation: emilHeroTitleIn 0.48s cubic-bezier(0.23, 1, 0.32, 1) 0.44s both;
   will-change: transform, opacity;
 }
 
@@ -1889,10 +1891,11 @@ body.menu-open {
   font-weight: 400;
   color: #a1a1a6;
   text-align: center;
+  text-wrap: balance;
   margin: 0 0 clamp(12px, 1.8vh, 18px) 0;
-  line-height: 1.4;
+  line-height: 1.45;
   padding: 0 8px;
-  animation: appleHeroSubtitleIn 0.52s cubic-bezier(0.16, 1, 0.3, 1) 0.24s both;
+  animation: emilHeroSubtitleIn 0.44s cubic-bezier(0.23, 1, 0.32, 1) 0.52s both;
   will-change: transform, opacity;
 }
 
@@ -1903,21 +1906,34 @@ body.menu-open {
   justify-content: center;
   gap: 12px;
   width: 100%;
-  animation: appleHeroActionsIn 0.52s cubic-bezier(0.16, 1, 0.3, 1) 0.32s both;
   will-change: transform, opacity;
 }
 
+/* Emil Kowalski: Micro-stagger between primary and secondary buttons (60ms) */
+.hero-keynote-actions > *:nth-child(1) {
+  animation: emilHeroActionsIn 0.44s cubic-bezier(0.23, 1, 0.32, 1) 0.58s both;
+}
+
+.hero-keynote-actions > *:nth-child(2) {
+  animation: emilHeroActionsIn 0.44s cubic-bezier(0.23, 1, 0.32, 1) 0.64s both;
+}
+
 /* ==========================================================================
-   Hero Action Buttons: Minimalist Dark Theme (Ver Catálogo & Contacto)
-   Crafted with Emil Kowalski Design Engineering Principles:
-   - Specific properties (no transition: all)
+   Hero Action Buttons: Apple Web Design Minimalist Style
+   Engineered with Emil Kowalski Design Principles:
+   - Specific transition properties (zero 'transition: all')
    - Custom strong ease-out: cubic-bezier(0.23, 1, 0.32, 1)
-   - Active press feedback: scale(0.97) with asymmetric timing (80ms press / 160ms release)
-   - Hover micro-interactions gated behind fine pointer
+   - Asymmetric press feedback: scale(0.97) with 80ms press / 160ms release
+   - Hover micro-interactions gated behind fine-pointer media query
+   - Apple SF Symbol icon micro-motion on hover & active press
+   - Clean, minimalist aesthetic (no fake glare, pure Apple restraint)
    ========================================================================== */
 
 .btn-hero-catalog,
-.btn-hero-inventory {
+.btn-hero-inventory,
+.btn-hero-contact,
+.btn-hero-whatsapp {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1925,38 +1941,40 @@ body.menu-open {
   padding: 10px 24px;
   min-height: 42px;
   border-radius: 9999px;
-  background: #ffffff;
-  color: #000000;
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  box-shadow:
-    0 4px 16px rgba(255, 255, 255, 0.12),
-    0 2px 6px rgba(0, 0, 0, 0.25);
-  font-family: 'SamsungOne', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", 'SamsungOne', "Segoe UI", Roboto, sans-serif;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -0.015em;
   text-decoration: none;
   white-space: nowrap;
   -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
   outline: none;
   cursor: pointer;
+  will-change: transform;
   transition:
     transform 160ms cubic-bezier(0.23, 1, 0.32, 1),
     background-color 160ms ease-out,
     border-color 160ms ease-out,
     box-shadow 160ms ease-out,
     color 160ms ease-out;
-  will-change: transform;
 }
 
-.btn-hero-catalog svg,
-.btn-hero-inventory svg {
-  flex-shrink: 0;
-  transition: transform 180ms cubic-bezier(0.23, 1, 0.32, 1);
+/* --- 1. Primary Button: Apple Pristine White Pill --- */
+.btn-hero-catalog,
+.btn-hero-inventory {
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow:
+    0 4px 16px rgba(255, 255, 255, 0.12),
+    0 2px 6px rgba(0, 0, 0, 0.25);
 }
 
 .btn-hero-catalog:focus-visible,
 .btn-hero-inventory:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
   box-shadow:
     0 0 0 3px rgba(255, 255, 255, 0.5),
     0 4px 16px rgba(0, 0, 0, 0.25);
@@ -1970,49 +1988,23 @@ body.menu-open {
   transition-duration: 80ms;
 }
 
+/* --- 2. Secondary Button: Apple Dark Frosted Glass Pill --- */
 .btn-hero-contact,
 .btn-hero-whatsapp {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px 24px;
-  min-height: 42px;
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.08);
+  background-color: rgba(255, 255, 255, 0.08);
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.18);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
     0 4px 16px rgba(0, 0, 0, 0.25);
-  font-family: 'SamsungOne', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: -0.015em;
-  text-decoration: none;
-  white-space: nowrap;
-  -webkit-tap-highlight-color: transparent;
-  outline: none;
-  cursor: pointer;
-  transition:
-    transform 160ms cubic-bezier(0.23, 1, 0.32, 1),
-    background-color 160ms ease-out,
-    border-color 160ms ease-out,
-    box-shadow 160ms ease-out;
-  will-change: transform;
-}
-
-.btn-hero-contact svg,
-.btn-hero-whatsapp svg {
-  flex-shrink: 0;
-  color: #ffffff;
-  transition: transform 180ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .btn-hero-contact:focus-visible,
 .btn-hero-whatsapp:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.35),
     0 0 0 3px rgba(255, 255, 255, 0.4),
@@ -2028,6 +2020,22 @@ body.menu-open {
   transition-duration: 80ms;
 }
 
+/* --- Apple SF Symbol Icon Micro-interactions --- */
+.btn-hero-icon {
+  flex-shrink: 0;
+  display: inline-block;
+  vertical-align: middle;
+  transition: transform 180ms cubic-bezier(0.23, 1, 0.32, 1);
+  will-change: transform;
+}
+
+.btn-hero-catalog:active .btn-hero-icon,
+.btn-hero-contact:active .btn-hero-icon {
+  transform: scale(0.95);
+  transition-duration: 80ms;
+}
+
+/* --- Fine-Pointer Desktop Hover (Gated behind Media Query) --- */
 @media (hover: hover) and (pointer: fine) {
   .btn-hero-catalog:hover,
   .btn-hero-inventory:hover {
@@ -2038,8 +2046,8 @@ body.menu-open {
       0 2px 8px rgba(0, 0, 0, 0.3);
   }
 
-  .btn-hero-catalog:hover svg,
-  .btn-hero-inventory:hover svg {
+  .btn-hero-catalog:hover .btn-hero-icon,
+  .btn-hero-inventory:hover .btn-hero-icon {
     transform: scale(1.1) translateY(-0.5px);
   }
 
@@ -2047,15 +2055,15 @@ body.menu-open {
   .btn-hero-whatsapp:hover {
     background-color: rgba(255, 255, 255, 0.14);
     border-color: rgba(255, 255, 255, 0.35);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.35),
-      0 8px 24px rgba(0, 0, 0, 0.4);
     transform: translateY(-2px);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.3),
+      0 8px 24px rgba(0, 0, 0, 0.4);
     color: #ffffff;
   }
 
-  .btn-hero-contact:hover svg,
-  .btn-hero-whatsapp:hover svg {
+  .btn-hero-contact:hover .btn-hero-icon,
+  .btn-hero-whatsapp:hover .btn-hero-icon {
     transform: scale(1.1) translateY(-0.5px);
   }
 }
@@ -2138,7 +2146,7 @@ body.menu-open {
   }
 
   /*
-   * Escenario ampliado para máxima inmersión del teléfono
+   * Escenario ajustado sutilmente para dar ligero respiro lateral sin perder tamaño
    */
   .hero-video-stage {
     max-width: 520px;
@@ -2150,7 +2158,7 @@ body.menu-open {
   }
 
   .hero-entrance-video {
-    --hero-video-scale: 1.28;
+    --hero-video-scale: 1.23;
     width: 100%;
     height: 100%;
     max-width: 100%;
@@ -2219,10 +2227,11 @@ body.menu-open {
 
   .hero-video-stage {
     margin-top: -8px;
+    padding: 0;
   }
 
   .hero-entrance-video {
-    --hero-video-scale: 1.2;
+    --hero-video-scale: 1.16;
     max-height: 44vh;
   }
 
@@ -2258,309 +2267,290 @@ body.menu-open {
 
 @media (prefers-reduced-motion: reduce) {
 
+  .hero-entrance-video,
   .hero-entrance-video.is-ready,
+  .floating-pill-navbar,
+  .floating-pill-navbar.is-ready,
   .hero-keynote-title,
+  .hero-keynote-info.is-ready .hero-keynote-title,
   .hero-keynote-subtitle,
-  .hero-keynote-actions {
-    animation: fadeIn 0.25s ease forwards !important;
-    transform: scale(var(--hero-video-scale, 1)) !important;
+  .hero-keynote-info.is-ready .hero-keynote-subtitle,
+  .hero-keynote-actions,
+  .hero-keynote-info.is-ready .hero-keynote-actions {
+    animation: none !important;
+    transform: none !important;
     opacity: 1 !important;
   }
 }
 
 /* ==========================================================================
-   Highlights Section
+   Brand & Category Carousel — "Explora por categoría."
+   Direct adaptation of Apple.com "Conoce a la familia" for Dark Mode
    ========================================================================== */
 
-.highlights-section {
+.brand-section {
   position: relative;
-  background: #1d1d1f;
-  padding: 84px 0 68px;
-  overflow: hidden;
+  background-color: #000000;
+  padding: clamp(56px, 7vh, 88px) 0 clamp(32px, 4vh, 48px);
   width: 100%;
+  overflow: hidden;
 }
 
-.highlights-header {
-  padding: 0 max(32px, calc((100vw - 1280px) / 2));
-  margin-bottom: 36px;
+.brand-section-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 4vw, 56px);
 }
 
-.hl-header-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 8px;
-}
-
-.hl-product-badge {
-  font-size: 14px;
-  color: rgba(245, 245, 247, 0.75);
-  letter-spacing: -0.01em;
-}
-
-.hl-explore-link {
-  display: inline-flex;
-  align-items: center;
-  font-size: 12.5px;
-  padding: 5px 14px;
-  border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.08);
+/* ── Heading — Apple uses a single bold line, no subtitle ── */
+.brand-heading {
+  font-family: 'SamsungSharpSans', -apple-system, BlinkMacSystemFont,
+    "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+  font-size: clamp(28px, 4.5vw, 48px);
+  font-weight: 700;
   color: #f5f5f7;
-  text-decoration: none;
-  transition: background 0.2s ease, border-color 0.2s ease;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  margin: 0 0 clamp(24px, 3.2vh, 38px);
 }
 
-.hl-explore-link:hover {
-  background: rgba(255, 255, 255, 0.16);
-  border-color: rgba(255, 255, 255, 0.45);
-}
-
-.hl-section-title {
-  font-size: clamp(32px, 4.5vw, 48px);
-  color: #f5f5f7;
-  line-height: 1.1;
-  letter-spacing: -0.025em;
-}
-
-.highlights-track {
-  position: relative;
+/* ── Carousel Track ── */
+.brand-carousel-track {
   display: flex;
-  gap: 32px;
+  gap: clamp(14px, 1.8vw, 20px);
   overflow-x: auto;
-  overflow-y: hidden;
   scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: 0 0 4px;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
-  padding-left: max(32px, calc((100vw - 1280px) / 2));
-  padding-right: max(32px, calc((100vw - 1280px) / 2));
-  scroll-padding-inline-start: max(32px, calc((100vw - 1280px) / 2));
-  padding-top: 4px;
-  padding-bottom: 8px;
-  cursor: grab;
   user-select: none;
   -webkit-user-select: none;
   touch-action: pan-x pan-y;
   overscroll-behavior-x: contain;
 }
+.brand-carousel-track::-webkit-scrollbar { display: none; }
 
-.highlights-track:active {
-  cursor: grabbing;
-}
-
-.highlights-track::-webkit-scrollbar {
-  display: none;
-}
-
-.hl-card {
-  flex: 0 0 auto;
-  width: min(1280px, calc(100vw - 64px));
-  height: 640px;
-  border-radius: 32px;
-  overflow: hidden;
-  position: relative;
+/* ── Brand Item — clean unboxed column (Apple anatomy) ── */
+.brand-item {
+  flex: 0 0 clamp(260px, 23vw, 300px);
   scroll-snap-align: start;
-  scroll-snap-stop: normal;
-  background: #151516;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
-}
-
-.hl-card-picture {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.hl-card-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.hl-card-vignette {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 50%;
-  background: linear-gradient(to bottom,
-      rgba(0, 0, 0, 0.72) 0%,
-      rgba(0, 0, 0, 0.36) 55%,
-      transparent 100%);
-  pointer-events: none;
-  z-index: 2;
-}
-
-.hl-card-text-layer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  padding-top: 40px;
-  z-index: 3;
-  display: flex;
-  justify-content: center;
-  will-change: transform;
-  pointer-events: auto;
-}
-
-.hl-card-text-box {
-  max-width: 800px;
-  text-align: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 6px;
+  align-items: flex-start;          /* Apple left-aligns text */
 }
 
-.hl-card-headline {
-  color: #ffffff;
-  font-size: 26px;
-  font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-}
-
-.hl-card-subheadline {
-  color: #b5b5b7;
-  font-size: 26px;
-  font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-}
-
-.hl-camera-modal-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 12px;
-  padding: 6px 14px;
-  border-radius: 9999px;
-  background: #28282a;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  color: #f5f5f7;
-  font-size: 13px;
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.15s ease;
-}
-
-.hl-camera-modal-btn:hover {
-  background: #38383c;
-  transform: scale(1.03);
-}
-
-.hl-camera-modal-btn:active {
-  transform: scale(0.97);
-}
-
-.hl-camera-modal-btn:focus-visible {
-  outline: 2px solid #ffffff;
-  outline-offset: 2px;
-}
-
-.hl-controls {
+/* ── Squircle visual container ──
+   Apple uses tall rounded-rect with a COLORED gradient bg.
+   Products are contained (not cropped) with generous padding. */
+.brand-visual-card {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 24px;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  margin-top: 36px;
-  padding: 0 24px;
-}
-
-.hl-controls-capsule {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  width: 188px;
-  height: 60px;
-  background: #28282a;
-  border-radius: 9999px;
-  padding: 0 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.hl-indicator-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-  border: none;
-  padding: 18px 4px;
+  padding: 24px;
+  box-sizing: border-box;
   cursor: pointer;
-  touch-action: manipulation;
+  outline: none;
+  will-change: transform;
+  transition: transform 280ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.hl-indicator-btn:focus-visible {
-  outline: 2px solid #ffffff;
+.brand-visual-card:focus-visible {
+  outline: 2px solid #fdf604;
   outline-offset: 3px;
-  border-radius: 9999px;
 }
 
-.hl-indicator-dot {
-  display: block;
-  width: 8px;
-  height: 8px;
-  border-radius: 9999px;
-  background: #636366;
-  position: relative;
-  overflow: hidden;
-  transition:
-    width 0.35s cubic-bezier(0.25, 1, 0.5, 1),
-    background-color 0.35s ease;
+/* 80ms press / 160ms release (Emil Kowalski asymmetric timing) */
+.brand-visual-card:active {
+  transform: scale(0.98);
+  transition-duration: 80ms;
 }
 
-.hl-indicator-btn.is-active .hl-indicator-dot {
-  width: 32px;
-  background: rgba(255, 255, 255, 0.28);
-}
-
-.hl-indicator-fill {
-  position: absolute;
-  top: 0;
-  left: 0;
+.brand-visual-img {
+  width: 100%;
   height: 100%;
-  background: #ffffff;
-  border-radius: 9999px;
-  will-change: width;
+  object-fit: contain;               /* Apple: product is never cropped */
+  object-position: center;
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.45));
+  transition: transform 360ms cubic-bezier(0.23, 1, 0.32, 1);
+  will-change: transform;
 }
 
-.hl-play-btn {
+@media (hover: hover) and (pointer: fine) {
+  .brand-visual-card:hover {
+    transform: scale(1.02);
+  }
+  .brand-visual-card:hover .brand-visual-img {
+    transform: scale(1.06);
+  }
+}
+
+/* ── Typography ── */
+.brand-item-title {
+  font-family: 'SamsungSharpSans', -apple-system, BlinkMacSystemFont,
+    "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+  font-size: clamp(21px, 2vw, 26px);
+  font-weight: 700;
+  color: #f5f5f7;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 18px 0 6px;
+}
+
+.brand-item-desc {
+  font-family: 'SamsungOne', -apple-system, BlinkMacSystemFont,
+    "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+  font-size: clamp(13px, 1.2vw, 15px);
+  font-weight: 400;
+  color: #86868b;
+  line-height: 1.4;
+  margin: 0 0 16px;
+}
+
+/* ── Yellow Pill CTA ── */
+.btn-brand-yellow {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: #28282a;
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 10px 22px;
+  border-radius: 9999px;
+  background-color: #fdf604;
+  color: #000000;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    'SamsungOne', "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  border: none;
   cursor: pointer;
+  outline: none;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  will-change: transform;
   transition:
-    background-color 0.2s ease,
-    transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+    transform 160ms cubic-bezier(0.23, 1, 0.32, 1),
+    background-color 160ms ease-out;
 }
 
-.hl-play-btn:hover {
-  background: #363639;
-  transform: scale(1.04);
-}
-
-.hl-play-btn:active {
-  transform: scale(0.95);
-}
-
-.hl-play-btn:focus-visible {
+.btn-brand-yellow:focus-visible {
   outline: 2px solid #ffffff;
   outline-offset: 3px;
+}
+
+/* 80ms press (asymmetric) */
+.btn-brand-yellow:active {
+  transform: scale(0.97);
+  background-color: #e0d900;
+  transition-duration: 80ms;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn-brand-yellow:hover {
+    background-color: #fffa40;
+    transform: translateY(-1px);
+  }
+}
+
+/* ── Bottom Controls ── */
+.brand-bottom-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+.brand-carousel-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.brand-arrow-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  color: #ffffff;
+  border: 1px solid rgba(255,255,255,0.1);
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  will-change: transform;
+  transition:
+    transform 160ms cubic-bezier(0.23, 1, 0.32, 1),
+    background-color 160ms ease-out,
+    opacity 160ms ease-out;
+}
+
+.brand-arrow-btn:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+.brand-arrow-btn:active {
+  transform: scale(0.9);
+  background: rgba(255,255,255,0.2);
+  transition-duration: 80ms;
+}
+
+.brand-arrow-btn:disabled {
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .brand-arrow-btn:not(:disabled):hover {
+    background: rgba(255,255,255,0.16);
+    transform: scale(1.06);
+  }
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .brand-section {
+    padding: 44px 0 28px;
+  }
+
+  .brand-heading {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+
+  .brand-item {
+    flex: 0 0 250px;
+  }
+
+  .brand-visual-card {
+    border-radius: 20px;
+    padding: 18px;
+  }
+
+  .brand-item-title {
+    font-size: 19px;
+    margin-top: 14px;
+  }
+
+  .brand-item-desc {
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  .btn-brand-yellow {
+    padding: 9px 18px;
+    font-size: 13px;
+  }
+
+  .brand-bottom-bar {
+    justify-content: center;
+    margin-top: 16px;
+  }
 }
 
 /* ==========================================================================

@@ -27,19 +27,19 @@ export default function Hero() {
         <h1>
           <span className="headline-line">
             <span className="headline-inner appear appear--mask" style={{ '--d': '0.42s' }}>
-              Tu <em>próximo celular</em>.
+              Tu próximo dispositivo
             </span>
           </span>
           <span className="headline-line">
             <span className="headline-inner appear appear--mask" style={{ '--d': '0.62s' }}>
-              está en Teknik Mobile.
+              está aquí.
             </span>
           </span>
         </h1>
 
         {/* Lede */}
         <p className="lede appear appear--soft" style={{ '--d': '0.82s' }}>
-          Encuentra el celular que va contigo. Conoce nuestras opciones y consulta disponibilidad en Teknik Mobile.
+          Descubre Samsung, Apple, Google Pixel, Smartwatches y teléfonos Calidad A+.
         </p>
 
         {/* Hero Actions */}
@@ -52,10 +52,10 @@ export default function Hero() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                <path d="M8 1.5C3.86 1.5 0.5 4.52 0.5 8.25c0 2.22 1.2 4.17 3.06 5.38-.15.8-.57 2-.62 2.18-.08.28.16.55.45.49.88-.18 2.25-.56 3.19-1.35.45.09.92.14 1.42.14 4.14 0 7.5-3.02 7.5-6.75S12.14 1.5 8 1.5Z" />
               </svg>
-              <span>Consultar por WhatsApp</span>
+              <span>Contacto</span>
             </a>
           ) : (
             <button
@@ -64,12 +64,12 @@ export default function Hero() {
               style={{ '--d': '0.96s' }}
               disabled
               title="Contacto pendiente de configurar"
-              aria-label="Consultar por WhatsApp — Contacto pendiente de configurar"
+              aria-label="Contacto — pendiente de configurar"
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                <path d="M8 1.5C3.86 1.5 0.5 4.52 0.5 8.25c0 2.22 1.2 4.17 3.06 5.38-.15.8-.57 2-.62 2.18-.08.28.16.55.45.49.88-.18 2.25-.56 3.19-1.35.45.09.92.14 1.42.14 4.14 0 7.5-3.02 7.5-6.75S12.14 1.5 8 1.5Z" />
               </svg>
-              <span>Consultar por WhatsApp</span>
+              <span>Contacto</span>
             </button>
           )}
 
@@ -79,6 +79,12 @@ export default function Hero() {
               className="btn btn-ghost appear appear--side"
               style={{ '--d': '1.10s' }}
             >
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                <rect x="1.5" y="1.5" width="5.5" height="5.5" rx="1.6" />
+                <rect x="9" y="1.5" width="5.5" height="5.5" rx="1.6" />
+                <rect x="1.5" y="9" width="5.5" height="5.5" rx="1.6" />
+                <rect x="9" y="9" width="5.5" height="5.5" rx="1.6" />
+              </svg>
               <span>Ver catálogo</span>
             </a>
           ) : (

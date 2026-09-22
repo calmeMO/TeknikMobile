@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { siteConfig, getWhatsAppUrl } from '../config/siteConfig';
 
-export default function HeroCinematic() {
+export default function HeroCinematic({ onVideoReady }) {
   const videoRef = useRef(null);
   const [isMobile, setIsMobile] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -11,6 +11,13 @@ export default function HeroCinematic() {
   });
   const [isReady, setIsReady] = useState(false);
   const whatsAppUrl = getWhatsAppUrl();
+
+  const triggerReady = () => {
+    setIsReady(true);
+    if (onVideoReady) {
+      onVideoReady();
+    }
+  };
 
   // Responsive device video detection (breakpoint 768px: desktop vs mobile)
   useEffect(() => {
@@ -41,9 +48,9 @@ export default function HeroCinematic() {
         } catch (e) {}
       }
     }
-    // Safety fallback: ensure isReady triggers smoothly with Apple motion feel
+    // Safety fallback: ensure isReady triggers smoothly with Apple / Emil motion feel
     timer = setTimeout(() => {
-      setIsReady(true);
+      triggerReady();
     }, 450);
 
     return () => {
@@ -59,24 +66,24 @@ export default function HeroCinematic() {
         if (Math.abs(video.currentTime - 3.6) > 0.4) {
           video.currentTime = 3.6;
         } else {
-          setIsReady(true);
+          triggerReady();
         }
         video.play().catch(() => {});
       } catch (e) {
-        setIsReady(true);
+        triggerReady();
       }
     }
   };
 
   const handleSeeked = () => {
-    setIsReady(true);
+    triggerReady();
     if (videoRef.current) {
       videoRef.current.play().catch(() => {});
     }
   };
 
   return (
-    <section className="hero-keynote-container" id="top" aria-label="Hero Samsung Galaxy S24 Ultra">
+    <section className="hero-keynote-container" id="top" aria-label="Hero Teknik Mobile">
       {/* 1. Video Entrance Animation at the Top: Starts at 3.6s, stops on back view */}
       <div className="hero-video-stage">
         <video
@@ -89,33 +96,40 @@ export default function HeroCinematic() {
           playsInline
           preload="auto"
           onLoadedMetadata={handleLoadedMetadata}
-          onCanPlay={() => setIsReady(true)}
-          onPlay={() => setIsReady(true)}
+          onCanPlay={triggerReady}
+          onPlay={triggerReady}
           onSeeked={handleSeeked}
         />
       </div>
 
-      {/* 2. Text strictly BELOW the video - matches user screenshot */}
-      <div className="hero-keynote-info">
+      {/* 2. Text strictly BELOW the video - enters choreographed after video */}
+      <div className={`hero-keynote-info ${isReady ? 'is-ready' : ''}`}>
         <h1 className="hero-keynote-title font-samsung-sharp">
-          Samsung Galaxy S24<br />Ultra
+          Tu próximo dispositivo está aquí.
         </h1>
         <p className="hero-keynote-subtitle font-samsung-one">
-          Descubre la innovación de Samsung en Teknik Mobile
+          Descubre Samsung, Apple, Google Pixel, Smartwatches y teléfonos Calidad A+.
         </p>
 
-        {/* 3. Action Buttons: Minimalist Dark Theme (Ver Catálogo y Contacto) */}
+        {/* 3. Action Buttons: Minimalist Apple Web Design (Ver Catálogo y Contacto) */}
         <div className="hero-keynote-actions">
           <a
             href="#catalogo"
             className="btn-hero-catalog font-samsung-bold"
             aria-label="Ver Catálogo"
           >
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <rect width="7" height="7" x="3" y="3" rx="1.5" />
-              <rect width="7" height="7" x="14" y="3" rx="1.5" />
-              <rect width="7" height="7" x="14" y="14" rx="1.5" />
-              <rect width="7" height="7" x="3" y="14" rx="1.5" />
+            <svg
+              className="btn-hero-icon"
+              width="15"
+              height="15"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <rect x="1.5" y="1.5" width="5.5" height="5.5" rx="1.6" />
+              <rect x="9" y="1.5" width="5.5" height="5.5" rx="1.6" />
+              <rect x="1.5" y="9" width="5.5" height="5.5" rx="1.6" />
+              <rect x="9" y="9" width="5.5" height="5.5" rx="1.6" />
             </svg>
             <span>Ver Catálogo</span>
           </a>
@@ -127,8 +141,15 @@ export default function HeroCinematic() {
             rel={whatsAppUrl ? "noopener noreferrer" : undefined}
             aria-label="Contacto"
           >
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            <svg
+              className="btn-hero-icon"
+              width="15"
+              height="15"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path d="M8 1.5C3.86 1.5 0.5 4.52 0.5 8.25c0 2.22 1.2 4.17 3.06 5.38-.15.8-.57 2-.62 2.18-.08.28.16.55.45.49.88-.18 2.25-.56 3.19-1.35.45.09.92.14 1.42.14 4.14 0 7.5-3.02 7.5-6.75S12.14 1.5 8 1.5Z" />
             </svg>
             <span>Contacto</span>
           </a>

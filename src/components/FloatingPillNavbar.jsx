@@ -7,7 +7,8 @@ export default function FloatingPillNavbar({
   onToggleMenu,
   burgerRef,
   activeBrand = 'all',
-  onSelectBrand
+  onSelectBrand,
+  isHeroReady = false
 }) {
   const whatsAppUrl = getWhatsAppUrl();
   const headerRef = useRef(null);
@@ -105,10 +106,10 @@ export default function FloatingPillNavbar({
   return (
     <>
       <header
-        className={`header${isPill ? ' is-pill' : ''}${isMenuOpen ? ' is-menu-open' : ''}`}
+        className={`header${isPill ? ' is-pill' : ''}${isMenuOpen ? ' is-menu-open' : ''}${isHeroReady ? ' is-ready' : ''}`}
         ref={headerRef}
       >
-        <div className={`floating-pill-navbar${isPill ? ' is-pill' : ''}${isMenuOpen ? ' is-menu-open' : ''}`}>
+        <div className={`floating-pill-navbar${isPill ? ' is-pill' : ''}${isMenuOpen ? ' is-menu-open' : ''}${isHeroReady ? ' is-ready' : ''}`}>
           {/* ── Main Row ── */}
           <div className="di-main-row">
             {/* Left: Logo */}
